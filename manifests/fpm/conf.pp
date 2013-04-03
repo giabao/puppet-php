@@ -45,7 +45,7 @@ define php::fpm::conf (
   $catch_workers_output = 'no',
   $env = [],
   $env_value = {},
-  $php_value = {},
+  $php_value = {'session.save_handler' => 'files', 'session.save_path' => '/var/lib/php/session'},
   $php_flag = {},
   $php_admin_value = {},
   $php_admin_flag = {},

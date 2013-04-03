@@ -1,6 +1,13 @@
 [<%= pool %>]
 
 ; The address on which to accept FastCGI requests.
+; Valid syntaxes are:
+;   'ip.add.re.ss:port'    - to listen on a TCP socket to a specific address on
+;                            a specific port;
+;   'port'                 - to listen on a TCP socket to all addresses on a
+;                            specific port;
+;   '/path/to/unix/socket' - to listen on a unix socket.
+; Note: This value is mandatory.
 listen = <%= listen %>
 
 ; Set listen(2) backlog. A value of '-1' means unlimited.
@@ -208,6 +215,14 @@ chdir = <%= chdir %>
 ; Default Value: no
 catch_workers_output = <%= catch_workers_output %>
  
+; Limits the extensions of the main script FPM will allow to parse. This can
+; prevent configuration mistakes on the web server side. You should only limit
+; FPM to .php extensions to prevent malicious users to use other extensions to
+; exectute php code.
+; Note: set an empty value to allow all extensions.
+; Default Value: .php
+;security.limit_extensions = .php .php3 .php4 .php5
+
 ; Pass environment variables like LD_LIBRARY_PATH. All $VARIABLEs are taken from
 ; the current environment.
 ; Default Value: clean env
@@ -241,7 +256,6 @@ env[<%= key %>] = <%= value %>
 ;                specified at startup with the -d argument
 ;php_admin_value[sendmail_path] = /usr/sbin/sendmail -t -i -f www@my.domain.com
 ;php_flag[display_errors] = off
-;php_admin_value[error_log] = /var/log/php-fpm/www-error.log
 ;php_admin_flag[log_errors] = on
 ;php_admin_value[memory_limit] = 32M
 <% if error_log == true -%>
