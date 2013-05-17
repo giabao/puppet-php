@@ -1,4 +1,5 @@
-[<%= pool %>]
+; Start a new pool named 'www'.
+[www]
 
 ; The address on which to accept FastCGI requests.
 ; Valid syntaxes are:
@@ -8,47 +9,37 @@
 ;                            specific port;
 ;   '/path/to/unix/socket' - to listen on a unix socket.
 ; Note: This value is mandatory.
-listen = <%= listen %>
+;listen = 127.0.0.1:9000
+listen = /var/run/php-fpm/php-fpm.sock
 
 ; Set listen(2) backlog. A value of '-1' means unlimited.
-listen.backlog = <%= listen_backlog %>
- 
+; Default Value: -1
+;listen.backlog = -1
+
 ; List of ipv4 addresses of FastCGI clients which are allowed to connect.
 ; Equivalent to the FCGI_WEB_SERVER_ADDRS environment variable in the original
 ; PHP FCGI (5.2.2+). Makes sense only with a tcp listening socket. Each address
 ; must be separated by a comma. If this value is left blank, connections will be
 ; accepted from any ip address.
 ; Default Value: any
-listen.allowed_clients = <%= listen_allowed_clients %>
+listen.allowed_clients = 127.0.0.1
 
 ; Set permissions for unix socket, if one is used. In Linux, read/write
 ; permissions must be set in order to allow connections from a web server. Many
 ; BSD-derived systems allow connections regardless of permissions.
 ; Default Values: user and group are set as the running user
 ;                 mode is set to 0666
-<% if @listen_owner -%>
-listen.owner = <%= listen_owner %>
-<% else -%>
 ;listen.owner = nobody
-<% end -%>
-<% if @listen_group -%>
-listen.group = <%= listen_group %>
-<% else -%>
 ;listen.group = nobody
-<% end -%>
-<% if @listen_mode -%>
-listen.mode = <%= listen_mode %>
-<% else -%>
 ;listen.mode = 0666
-<% end -%>
 
 ; Unix user/group of processes
 ; Note: The user is mandatory. If the group is not set, the default user's group
 ;       will be used.
 ; RPM: apache Choosed to be able to access some dir as httpd
-user = <%= user %>
+user = apache
 ; RPM: Keep a group allowed to write in log dir.
-group = <%= group_final %>
+group = apache
 
 ; Choose how the process manager will control the number of child processes.
 ; Possible Values:
@@ -67,7 +58,7 @@ group = <%= group_final %>
 ;                                    of 'idle' processes is greater than this
 ;                                    number then some children will be killed.
 ; Note: This value is mandatory.
-pm = <%= pm %>
+pm = dynamic
 
 ; The number of child processes to be created when pm is set to 'static' and the
 ; maximum number of child processes to be created when pm is set to 'dynamic'.
@@ -77,28 +68,28 @@ pm = <%= pm %>
 ; CGI.
 ; Note: Used when pm is set to either 'static' or 'dynamic'
 ; Note: This value is mandatory.
-pm.max_children = <%= pm_max_children %>
+pm.max_children = 50
 
 ; The number of child processes created on startup.
 ; Note: Used only when pm is set to 'dynamic'
 ; Default Value: min_spare_servers + (max_spare_servers - min_spare_servers) / 2
-pm.start_servers = <%= pm_start_servers %>
+pm.start_servers = 5
 
 ; The desired minimum number of idle server processes.
 ; Note: Used only when pm is set to 'dynamic'
 ; Note: Mandatory when pm is set to 'dynamic'
-pm.min_spare_servers = <%= pm_min_spare_servers %>
+pm.min_spare_servers = 5
 
 ; The desired maximum number of idle server processes.
 ; Note: Used only when pm is set to 'dynamic'
 ; Note: Mandatory when pm is set to 'dynamic'
-pm.max_spare_servers = <%= pm_max_spare_servers %>
- 
+pm.max_spare_servers = 35
+
 ; The number of requests each child process should execute before respawning.
 ; This can be useful to work around memory leaks in 3rd party libraries. For
 ; endless request processing specify '0'. Equivalent to PHP_FCGI_MAX_REQUESTS.
 ; Default Value: 0
-pm.max_requests = <%= pm_max_requests %>
+;pm.max_requests = 1000
 
 ; The URI to view the FPM status page. If this value is not set, no URI will be
 ; recognized as a status page. By default, the status page shows the following
@@ -127,13 +118,9 @@ pm.max_requests = <%= pm_max_requests %>
 ; Note: The value must start with a leading slash (/). The value can be
 ;       anything, but it may not be a good idea to use the .php extension or it
 ;       may conflict with a real PHP file.
-; Default Value: not set 
-<% if @pm_status_path -%>
-pm.status_path = <%= pm_status_path %>
-<% else -%>
+; Default Value: not set
 ;pm.status_path = /status
-<% end -%>
- 
+
 ; The ping URI to call the monitoring page of FPM. If this value is not set, no
 ; URI will be recognized as a ping page. This could be used to test from outside
 ; that FPM is alive and responding, or to
@@ -144,51 +131,39 @@ pm.status_path = <%= pm_status_path %>
 ;       anything, but it may not be a good idea to use the .php extension or it
 ;       may conflict with a real PHP file.
 ; Default Value: not set
-<% if @ping_path -%>
-ping.path = <%= ping_path %>
-<% else -%>
 ;ping.path = /ping
-<% end -%>
 
 ; This directive may be used to customize the response of a ping request. The
 ; response is formatted as text/plain with a 200 response code.
 ; Default Value: pong
-ping.response = <%= ping_response %>
+;ping.response = pong
 
 ; The timeout for serving a single request after which the worker process will
 ; be killed. This option should be used when the 'max_execution_time' ini option
 ; does not stop script execution for some reason. A value of '0' means 'off'.
 ; Available units: s(econds)(default), m(inutes), h(ours), or d(ays)
 ; Default Value: 0
-request_terminate_timeout = <%= request_terminate_timeout %>
+request_terminate_timeout = 0
 
 ; The timeout for serving a single request after which a PHP backtrace will be
 ; dumped to the 'slowlog' file. A value of '0s' means 'off'.
 ; Available units: s(econds)(default), m(inutes), h(ours), or d(ays)
 ; Default Value: 0
-request_slowlog_timeout = <%= request_slowlog_timeout %>
+request_slowlog_timeout = 0
 
 ; The log file for slow requests
 ; Default Value: not set
 ; Note: slowlog is mandatory if request_slowlog_timeout is set
-slowlog = <%= slowlog %>
+slowlog = /var/log/php-fpm/www-slow.log
 
 ; Set open file descriptor rlimit.
 ; Default Value: system defined value
-<% if @rlimit_files -%>
-rlimit_files = <%= rlimit_files %>
-<% else -%>
 ;rlimit_files = 1024
-<% end -%>
 
 ; Set max core size rlimit.
 ; Possible Values: 'unlimited' or an integer greater or equal to 0
 ; Default Value: system defined value
-<% if @rlimit_core -%>
-rlimit_core = <%= rlimit_core %>
-<% else -%>
 ;rlimit_core = 0
-<% end -%>
 
 ; Chroot to this directory at the start. This value must be defined as an
 ; absolute path. When this value is not set, chroot is not used.
@@ -196,24 +171,16 @@ rlimit_core = <%= rlimit_core %>
 ;       possible. However, all PHP paths will be relative to the chroot
 ;       (error_log, sessions.save_path, ...).
 ; Default Value: not set
-<% if @chroot -%>
-chroot = <%= chroot %>
-<% else -%>
-;chroot = 
-<% end -%>
+;chroot =
 
 ; Chdir to this directory at the start. This value must be an absolute path.
 ; Default Value: current directory or / when chroot
-<% if @chdir -%>
-chdir = <%= chdir %>
-<% else -%>
 ;chdir = /var/www
-<% end -%>
- 
+
 ; Redirect worker stdout and stderr into main error log. If not set, stdout and
 ; stderr will be redirected to /dev/null according to FastCGI specs.
 ; Default Value: no
-catch_workers_output = <%= catch_workers_output %>
+;catch_workers_output = no
 
 ; Limits the extensions of the main script FPM will allow to parse. This can
 ; prevent configuration mistakes on the web server side. You should only limit
@@ -231,12 +198,6 @@ catch_workers_output = <%= catch_workers_output %>
 ;env[TMP] = /tmp
 ;env[TMPDIR] = /tmp
 ;env[TEMP] = /tmp
-<% env.each do |var| -%>
-env[<%= var %>] = $<%= var %>
-<% end -%>
-<% env_value.sort_by {|key,value| key}.each do |key,value| -%>
-env[<%= key %>] = <%= value %>
-<% end -%>
 
 ; Additional php.ini defines, specific to this pool of workers. These settings
 ; overwrite the values previously defined in the php.ini. The directives are the
@@ -256,27 +217,10 @@ env[<%= key %>] = <%= value %>
 ;                specified at startup with the -d argument
 ;php_admin_value[sendmail_path] = /usr/sbin/sendmail -t -i -f www@my.domain.com
 ;php_flag[display_errors] = off
-;php_admin_flag[log_errors] = on
-;php_admin_value[memory_limit] = 32M
-<% if error_log == true -%>
-php_admin_value[error_log] = /var/log/php-fpm/<%= pool %>-error.log
+php_admin_value[error_log] = /var/log/php-fpm/www-error.log
 php_admin_flag[log_errors] = on
-<% elsif !error_log.empty? -%>
-php_admin_value[error_log] = <%= error_log %>
-php_admin_flag[log_errors] = on
-<% end -%>
-<% php_value.sort_by {|key,value| key}.each do |key,value| -%>
-php_value[<%= key %>] = <%= value %>
-<% end -%>
-<% php_flag.sort_by {|key,flag| key}.each do |key,flag| -%>
-php_flag[<%= key %>] = <%= flag %>
-<% end -%>
-<% php_admin_value.sort_by {|key,value| key}.each do |key,value| -%>
-php_admin_value[<%= key %>] = <%= value %>
-<% end -%>
-<% php_admin_flag.sort_by {|key,flag| key}.each do |key,flag| -%>
-php_admin_flag[<%= key %>] = <%= flag %>
-<% end -%>
-<% php_directives.each do |line| -%>
-<%= line %>
-<% end -%>
+;php_admin_value[memory_limit] = 128M
+
+; Set session path to a directory owned by process user
+php_value[session.save_handler] = files
+php_value[session.save_path] = /var/lib/php/session
