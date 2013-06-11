@@ -6,8 +6,9 @@ Install PHP packages and configure PHP INI files, for using PHP from the CLI,
 the Apache httpd module or FastCGI.
 
 The module is very Red Hat Enterprise Linux focused, as the defaults try to
-change everything in ways which are typical for RHEL, but should also work on
-other distributions and might be possible to port if needed.
+change everything in ways which are typical for RHEL, but it also works on
+Debian based distributions (such as Ubuntu), and support for others should
+be easy to add.
 
 * `php::cli` : Simple class to install PHP's Command Line Interface
 * `php::fpm::daemon` : Simple class to install PHP's FastCGI Process Manager
