@@ -1,12 +1,11 @@
 {
   "name": "sandinh-php",
+  "version": "0.3.1",
+  "summary": "PHP module",
   "author": "Matthias Saou, giabao@sandinh.net",
   "description": "Install and configure PHP for any of CLI, Apache httpd module and FastCGI.",
-  "license": "Apache 2.0",
-  "project_page": "http://sandinh.com",
-  "source": "https://github.com/giabao/puppet-php",
-  "summary": "PHP module",
-  "version": "0.3.1",
+  "dependencies": [],
+  "types": [],
   "checksums": {
     "ChangeLog": "1e456603b6a5a92a484514ef1438059d",
     "LICENSE": "8182c8001bcc31b9cab54d5c251e44ee",
@@ -37,5 +36,7 @@
     "tests\\module.pp": "854e337cb30a085292a38790623a1b1c",
     "tests\\module\\ini.pp": "2b6630bc6b7536c66172e5cba8b031af"
   },
-  "dependencies": []
+  "source": "https://github.com/giabao/puppet-php",
+  "project_page": "http://sandinh.com",
+  "license": "Apache 2.0"
 }
