@@ -695,7 +695,7 @@ default_mimetype = "<%= @default_mimetype %>"
 ; PHP's default character set is set to empty.
 ; http://php.net/default-charset
 ;default_charset = "UTF-8"
-<% if default_charset -%>
+<% if @default_charset -%>
 default_charset = <%= @default_charset %>
 <% end -%>
 
@@ -717,7 +717,7 @@ default_charset = <%= @default_charset %>
 ;
 ; PHP's default setting for include_path is ".;/path/to/php/pear"
 ; http://php.net/include-path
-<% if include_path -%>
+<% if @include_path -%>
 include_path = "<%= @include_path %>"
 <% end -%>
 
@@ -811,7 +811,7 @@ file_uploads = <%= @file_uploads %>
 upload_max_filesize = <%= @upload_max_filesize %>
 
 ; Maximum number of files that can be uploaded via a single request
-max_file_uploads = <%= max_file_uploads %>
+max_file_uploads = <%= @max_file_uploads %>
 
 ;;;;;;;;;;;;;;;;;;
 ; Fopen wrappers ;
