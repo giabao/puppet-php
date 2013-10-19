@@ -1,5 +1,5 @@
 name 'sandinh-php'
-version '0.3.1'
+version '0.4.0'
 
 author 'Matthias Saou, giabao@sandinh.net'
 license 'Apache 2.0'
