@@ -331,9 +331,10 @@ disable_classes = <%= @disable_classes %>
 ; being interrupted by the user or a browser timing out. PHP's default behavior
 ; is to disable this feature.
 ; http://php.net/ignore-user-abort
-;ignore_user_abort = On
 <% if @ignore_user_abort -%>
 ignore_user_abort = <%= @ignore_user_abort %>
+<% else -%>
+;ignore_user_abort = On
 <% end -%>
 
 ; Determines the size of the realpath cache to be used by PHP. This value should
@@ -581,12 +582,13 @@ html_errors = <%= @html_errors %>
 ; Log errors to specified file. PHP's default behavior is to leave this value
 ; empty.
 ; http://php.net/error-log
+<% if @error_log -%>
+error_log = <%= @error_log %>
+<% else -%>
 ; Example:
 ;error_log = php_errors.log
 ; Log errors to syslog (Event Log on NT, not valid in Windows 95).
 ;error_log = syslog
-<% if @error_log -%>
-error_log = <%= @error_log %>
 <% end -%>
 
 ;windows.show_crt_warning
@@ -693,9 +695,10 @@ default_mimetype = "<%= @default_mimetype %>"
 
 ; PHP's default character set is set to empty.
 ; http://php.net/default-charset
-;default_charset = "UTF-8"
 <% if @default_charset -%>
 default_charset = <%= @default_charset %>
+<% else -%>
+;default_charset = "UTF-8"
 <% end -%>
 
 ; Always populate the $HTTP_RAW_POST_DATA variable. PHP's default behavior is
@@ -807,7 +810,11 @@ file_uploads = <%= @file_uploads %>
 ; Temporary directory for HTTP uploaded files (will use system default if not
 ; specified).
 ; http://php.net/upload-tmp-dir
+<% if @upload_tmp_dir -%>
+upload_tmp_dir = <%= @upload_tmp_dir %>
+<% else -%>
 ;upload_tmp_dir =
+<% end -%>
 
 ; Maximum allowed size for uploaded files.
 ; http://php.net/upload-max-filesize
@@ -889,9 +896,10 @@ cli_server.color = On
 [Date]
 ; Defines the default timezone used by the date functions
 ; http://php.net/date.timezone
-;date.timezone =
 <% if @date_timezone -%>
 date.timezone = <%= @date_timezone %>
+<% else -%>
+;date.timezone =
 <% end -%>
 
 ; http://php.net/date.default-latitude
@@ -963,7 +971,11 @@ pdo_mysql.default_socket=
 
 [Phar]
 ; http://php.net/phar.readonly
+<% if @phar_readonly -%>
+phar.readonly = <%= @phar_readonly %>
+<% else -%>
 ;phar.readonly = On
+<% end -%>
 
 ; http://php.net/phar.require-hash
 ;phar.require_hash = On
@@ -1325,9 +1337,10 @@ bcmath.scale = 0
 
 [browscap]
 ; http://php.net/browscap
-;browscap = extra/browscap.ini
-<% if @browscap %>
+<% if @browscap -%>
 browscap = <%= @browscap %>
+<% else -%>
+;browscap = extra/browscap.ini
 <% end -%>
 
 [Session]
@@ -1776,7 +1789,7 @@ tidy.clean_output = Off
 [soap]
 ; Enables or disables WSDL caching feature.
 ; http://php.net/soap.wsdl-cache-enabled
-soap.wsdl_cache_enabled=1
+soap.wsdl_cache_enabled=<%= @soap_wsdl_cache_enabled %>
 
 ; Sets the directory name where SOAP extension will put cache files.
 ; http://php.net/soap.wsdl-cache-dir
@@ -1784,12 +1797,16 @@ soap.wsdl_cache_enabled=1
 ; RPM note : cache directory must be owned by process owner
 ; for mod_php, see /etc/httpd/conf.d/php.conf
 ; for php-fpm, see /etc/php-fpm.d/*conf
+<% if @soap_wsdl_cache_dir -%>
+soap.wsdl_cache_dir="<%= @soap_wsdl_cache_dir %>"
+<% else -%>
 ;soap.wsdl_cache_dir="/tmp"
+<% end -%>
 
 ; (time to live) Sets the number of second while cached file will be used
 ; instead of original one.
 ; http://php.net/soap.wsdl-cache-ttl
-soap.wsdl_cache_ttl=86400
+soap.wsdl_cache_ttl=<%= @soap_wsdl_cache_ttl %>
 
 ; Sets the size of the cache limit. (Max. number of WSDL files to cache)
 soap.wsdl_cache_limit = 5

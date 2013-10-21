@@ -12,6 +12,7 @@
 #  }
 #
 define php::ini (
+  $template                   = 'php/php.ini-el6.erb',
   # php.ini options in the order they appear in the original file
   $user_ini_filename          = '.user.ini',
   $user_ini_cache_ttl         = '300',
@@ -25,7 +26,7 @@ define php::ini (
   $serialize_precision        = '17',
   $disable_functions          = '',
   $disable_classes            = '',
-  $ignore_user_abort          = false,
+  $ignore_user_abort          = undef,
   $expose_php                 = 'On',
   $max_execution_time         = '30',
   $max_input_time             = '60',
@@ -40,7 +41,7 @@ define php::ini (
   $report_memleaks            = 'On',
   $track_errors               = 'Off',
   $html_errors                = 'On',
-  $error_log                  = false,
+  $error_log                  = undef,
   $variables_order            = 'GPCS',
   $request_order              = 'GP',
   $register_argc_argv         = 'Off',
@@ -49,22 +50,24 @@ define php::ini (
   $auto_prepend_file          = '',
   $auto_append_file           = '',
   $default_mimetype           = 'text/html',
-  $default_charset            = false,
-  $include_path               = false,
+  $default_charset            = undef,
+  $include_path               = undef,
   $doc_root                   = '',
   $user_dir                   = '',
   $enable_dl                  = 'Off',
   $file_uploads               = 'On',
+  $upload_tmp_dir             = undef,
   $upload_max_filesize        = '2M',
   $max_file_uploads           = '20',
   $allow_url_fopen            = 'On',
   $allow_url_include          = 'Off',
   $default_socket_timeout     = '60',
-  $date_timezone              = false,
+  $date_timezone              = undef,
+  $phar_readonly              = undef,
   $sendmail_path              = '/usr/sbin/sendmail -t -i',
   $mail_add_x_header          = 'On',
   $sql_safe_mode              = 'Off',
-  $browscap                   = false,
+  $browscap                   = undef,
   $session_save_handler       = 'files',
   $session_use_cookies        = '1',
   $session_use_only_cookies   = '1',
@@ -83,11 +86,14 @@ define php::ini (
   $session_referer_check      = '',
   $session_hash_function      = '0',
   $session_hash_bits_per_character = '5',
-  $url_rewriter_tags          = 'a=href,area=href,frame=src,input=src,form=fakeentry'
+  $url_rewriter_tags          = 'a=href,area=href,frame=src,input=src,form=fakeentry',
+  $soap_wsdl_cache_enabled    = '1',
+  $soap_wsdl_cache_dir        = undef,
+  $soap_wsdl_cache_ttl        = '86400'
 ) {
   include php::common
   file { $title:
-    content => template('php/php.ini-el6.erb'),
+    content => template($template),
   }
 }
 
